@@ -53,22 +53,6 @@ volumes:[
       }
     }
 
-    def acct = pipeline.getContainerRepoAcct(config)
-
-    // tag image with version, and branch-commit_id
-    def image_tags_map = pipeline.getContainerTags(config)
-
-    // compile tag list
-    def image_tags_list = pipeline.getMapValues(image_tags_map)
-
-    stage ('compile and test') {
-
-      container('golang') {
-        sh "go test -v -race ./..."
-        sh "make bootstrap build"
-      }
-    }
-
     stage ('test deployment') {
 
       container('helm') {
@@ -83,7 +67,6 @@ volumes:[
           namespace     : config.app.name,
           chart_dir     : chart_dir,
           set           : [
-            "imageTag": image_tags_list.get(0),
             "replicas": config.app.replicas,
             "cpu": config.app.cpu,
             "memory": config.app.memory,
@@ -104,7 +87,6 @@ volumes:[
             namespace     : env.BRANCH_NAME.toLowerCase(),
             chart_dir     : chart_dir,
             set           : [
-              "imageTag": image_tags_list.get(0),
               "replicas": config.app.replicas,
               "cpu": config.app.cpu,
               "memory": config.app.memory,
