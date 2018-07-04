@@ -1,21 +1,12 @@
 {
   "app": {
-    "name": "croc-hunter",
-    "replicas": "3",
+    "name": "grafana",
+    "namespace": "monitoring",
+    "replicas": "1",
     "cpu": "10m",
     "memory": "128Mi",
     "test": true,
-    "hostname": "croc-hunter.acs.az.estrado.io"
-  },
-  "container_repo": {
-    "host": "quay.io",
-    "master_acct": "lachie83",
-    "alt_acct": "lachie83",
-    "jenkins_creds_id": "quay_creds",
-    "repo": "croc-hunter",
-    "dockeremail": ".",
-    "dockerfile": "./",
-    "image_scanning": false
+    "hostname": "grafana.io"
   },
   "pipeline": {
       "enabled": true,
